@@ -1,0 +1,308 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<h3 class="has-text-centered is-size-2 has-text-weight-bold is-italic">
+  Hello, {{user.first_name}}
+</h3>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-centered" id="buttonSearch">
+        <div class="tabs is-medium is-fullwidth">
+          <ul>
+            <li class="is-active" data-target="popular">
+              <a><i class="fa-solid fa-fire"></i>&nbsp;&nbsp;<strong>New Questions</strong></a>
+            </li>
+
+            <li data-target="your-questions">
+              <a
+                ><i class="fa-solid fa-person-circle-question"></i
+                >&nbsp;&nbsp;<strong>Your Posts</strong></a
+              >
+            </li>
+            <li>
+              <a href="/ask"
+                ><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;<strong>Create New</strong></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="px-2" id="tab-content">
+          <div class="control" id="popular">
+            <h1 class="title is-primary has-text-centered is-size-1">All Questions</h1>
+            <p class="is-size-4 has-text-centered">
+              View all questions posted.
+            </p>
+
+            <div class="control">
+              {% for q in all_questions %}
+              
+                <div class="control box has-background-black-bis">
+                  {% if q.answer == "" %}
+                    <h1 class="has-text-danger">Not Answered</h1>
+                  {% else %}
+                    <h1 class="has-text-success">Answer below</h1>
+                  {% endif %}
+                  
+                
+                  <li>
+                    <div class="box is-centered has-background-black-bis">
+                    <div class="box has-background-grey-darker">
+                    <h1 class="has-text-weight-bold has-text-link-light" >Author:</h1>
+                    
+                    <div class="has-background-grey-darker">
+                      {% if user.id == first_names[all_questions.index(q)].id %}
+
+                      <p class="is-size-4 has-text-light">You ({{user.first_name}})</p>
+                      {% else %}
+                      <p class="is-size-4 has-text-light">{{first_names[all_questions.index(q)].first_name}}</p>
+                      {% endif %}
+                    </div></div><div class="box has-background-grey-darker">
+                    <h1 class="has-text-weight-bold has-text-link-light" >Subject:</h1>
+                    
+                    <div class="has-background-grey-darker">
+                      <p class="is-size-4 has-text-light">{{q.subject}}</p>
+                    </div></div><div class="box has-background-grey-darker">
+                    <h1 class="has-text-weight-bold has-text-link-light" >Body:</h1>
+                    <div class="has-background-grey-darker">
+                      <p class="is-size-5 has-text-light">{{q.body}}</p>
+                    </div></div><div class="box has-background-grey-darker">
+                    <h1 class="has-text-light has-text-weight-bold " >Images:</h1>
+                    <div id="damage" class="has-background-grey-darker box">
+                      <div class="columns">
+                      {% if q.image1 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert1">
+                          <img id="im1" width = "80%" src="{{q.image1}}">
+                        </figure>
+                        
+                        
+                        
+                      </div>{% endif %}
+                      {% if q.image2 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert2">
+                          <img id="im2" width = "80%" src="{{q.image2}}">
+                        </figure>
+                        
+
+                        
+                      </div>{% endif %}
+                      {% if q.image3 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert3">
+                          <img id="im3" width = "80%" src="{{q.image3}}">
+                        </figure>
+                        
+                        
+                      </div>{% endif %}
+                    
+                    
+                    {% if q.image1 == None and q.image2 == None and q.image3 == None  %}
+                    <p class="is-size-4 has-text-light">This question has no images.</p>
+                    {% endif %}
+                    </div>
+                      
+                    </div></div>
+                    
+                      
+                    {% if q.answer =="" %}
+                    {% if user.id != first_names[all_questions.index(q)].id %}
+                    <div class="field" id="{{q.id}}">
+                    <button class="button is-success"><p class="has-text-dark">Add answer/comment</p></button></div>
+                    {% endif %}
+                    {% else %}
+                    <div class="box has-background-primary-dark">
+                      <h1 class="has-text-weight-bold has-text-link-light" >Answer:</h1>
+                      
+                      <div class="has-background-primary-dark">
+                        <p class="has-text-light">{{q.answer}}</p>
+                      </div></div>
+                    {% endif %}
+                  </div>
+                  </li></div>
+                
+                
+
+
+              {% endfor %}
+            </div>
+
+          </div>
+
+          <div class="control is-hidden" id="your-questions">
+            <h1 class="title has-text-centered is-size-1">Your posts:</h1> <p class="has-text-centered">Showed with most recent at bottom</p>
+            
+              {% if user.is_authenticated %}
+              <ul id="asked_questions">
+                {% if user.asked_questions|length != 0 %}
+                {% for question in user.asked_questions %}
+                <h1 class="has-text-centered heading is-size-5">Question {{user.asked_questions.index(question) + 1}}</h1>
+                <div class="control box has-background-black-bis">
+                  {% if question.answer == "" %}
+                    <h1 class="has-text-danger">Not Answered</h1>
+                  {% else %}
+                    <h1 class="has-text-success">Answered</h1>
+                  {% endif %}
+                  
+                
+                  <li>
+                    <div class="box is-centered has-background-black-bis">
+                    <div class="box has-background-grey-darker">
+                    <h1 class="has-text-weight-bold has-text-link-light" >Subject:</h1>
+                    
+                    <div class="has-background-grey-darker">
+                      <p class="is-size-4 has-text-light">{{question.subject}}</p>
+                    </div></div><div class="box has-background-grey-darker">
+                    <h1 class="has-text-weight-bold has-text-link-light" >Body:</h1>
+                    <div class="has-background-grey-darker">
+                      <p class="is-size-5 has-text-light">{{question.body}}</p>
+                    </div></div><div class="box has-background-grey-darker">
+                    <h1 class="has-text-light has-text-weight-bold " >Images:</h1>
+                    <div id="damage" class="has-background-grey-darker box">
+                      <div class="columns">
+                      {% if question.image1 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert1">
+                          <img id="imm1" width = "80%" src="{{question.image1}}">
+                        </figure>
+                        <script type="text/javascript">
+                          src="{{question.image1}}"
+                          document.getElementById("imm1").src = decodeURI(src);
+                        </script>
+                        
+                        
+                      </div>{% endif %}
+                      {% if question.image2 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert2">
+                          <img id="imm2" width = "80%" src="{{question.image2}}">
+                        </figure>
+                        <script type="text/javascript">
+                          src="{{question.image2}}"
+                          document.getElementById("imm2").src = decodeURI(src);
+                        </script>
+                        
+
+                        
+                      </div>{% endif %}
+                      {% if question.image3 != None %}
+                      <div class="column">
+                        <figure class="image" id="insert3">
+                          <img id="imm3" width = "80%" src="{{question.image3}}">
+                        </figure>
+                        <script type="text/javascript">
+                          src="{{question.image3}}"
+                          document.getElementById("imm3").src = decodeURI(src);
+                        </script>
+                        
+                      </div>{% endif %}</div>
+                    
+                    {% if question.image1 == None and question.image2 == None and question.image3 == None  %}
+                    <p class="is-size-4 has-text-light">This question has no images.</p>
+                    {% endif %}
+                    </div>
+                      
+                    </div>
+                  </div>
+                  </li>
+                  {% if question.answer != "" %}
+                  <div class="box has-background-primary-dark">
+                      <h1 class="has-text-weight-bold has-text-link-light" >Answer:</h1>
+                      
+                      <div class="has-background-primary-dark">
+                        <p class="has-text-light">{{question.answer}}</p>
+                      </div></div>
+                      {% endif %}
+                </div>
+                
+                
+
+                {% endfor %}
+
+              </ul>
+              {% else %}
+              <h1 class="is-size-3 has-text-centered">You haven&apos;t posted any questions.</h1>
+              <h1 class="is-size-3 has-text-centered"> Click on &quot;<i class="fa-solid fa-plus"></i>&nbsp;&nbsp;<strong class="has-text-weight-bold">Create New</strong>&quot; to create one.</h1>
+              {% endif %}
+              {% else %}
+              <div class="column">
+                <div class="box">
+                  <h1 class="is-size-3 has-text-centered">
+                    Please
+                    <a href="/login" class="is-link">sign in</a>
+                    to see your posted questions.
+                  </h1>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          const tabs = document.querySelectorAll(".tabs li");
+         
+          const tabContentBoxes = document.querySelectorAll("#tab-content > div");
+          const answerButtons = document.querySelectorAll("button")
+          
+
+          tabs.forEach((tab) => {
+            
+            tab.addEventListener("click", () => {
+              
+              tabs.forEach((item) => item.classList.remove("is-active"));
+              tab.classList.add("is-active");
+
+              const target = tab.dataset.target;
+              tabContentBoxes.forEach(box => {
+                if (box.getAttribute('id') == target){
+                  box.classList.remove("is-hidden")
+                }
+                else {
+                  box.classList.add("is-hidden")
+                }
+              })
+
+            });
+          });
+
+          answerButtons.forEach((button) => {
+            if (button.id != "logout"){
+
+              button.addEventListener("click", () => {
+                div = button.parentNode
+                textarea = document.createElement('textarea')
+                textarea.classList.add("textarea")
+                textarea.maxlength = "2000"
+                textarea.placeholder="Answer/comment here..."
+                textarea.name="textarea"
+                form = document.createElement('form')
+                form.method='POST'
+                div.appendChild(form)
+                control = document.createElement("div")
+                div.classList.add("control")
+                control.appendChild(textarea)
+                form.appendChild(control)
+                input = document.createElement("input")
+                input.value = div.id
+                input.name = "idddd"
+                input.hidden=true
+                form.appendChild(input)
+                submit = document.createElement("button")
+                submit.type="submit"
+                submit.classList.add("button")
+                submit.classList.add("is-dark")
+                submit.innerHTML="Done"
+                form.appendChild(submit)
+                button.remove()
+
+
+
+              })
+            }
+          })
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

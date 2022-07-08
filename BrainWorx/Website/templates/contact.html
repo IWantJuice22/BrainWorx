@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+
+<form method="POST">
+  <h3 class="has-text-centered is-size-3 has-text-weight-bold">Contact us</h3>
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="field">
+          <label class="label" for="email"> Email Address </label>
+
+          {% if user.is_authenticated %}
+          <label class="label is-italic" for="email">
+            (Logout in order to use a different email address.)
+          </label>
+          <div class="control">
+            <input
+              type="email"
+              class="input"
+              id="email"
+              name="email"
+              value="{{ user.email }}"
+              disabled
+            />
+          </div>
+          {% else %}
+          <div class="control">
+            <input
+              type="email"
+              class="input"
+              id="email"
+              name="email"
+              placeholder="Enter your email address"
+            />
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="subject"> Subject </label>
+          <div class="control">
+            <input
+              type="text"
+              class="input"
+              id="subject"
+              name="subject"
+              placeholder="Subject..."
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="body"> Message </label>
+          <div class="control">
+            <textarea
+              class="textarea is-primary"
+              id="body"
+              name="body"
+              placeholder="Enter your message here."
+            ></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="button is-success">Submit Message</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

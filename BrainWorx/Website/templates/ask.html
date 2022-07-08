@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% block title %}Post a Question{% endblock %} {%
+block content %}
+<script
+  type="text/javascript"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"
+></script>
+<body>
+  <form method="POST">
+    <h3 class="has-text-centered is-size-2 has-text-weight-bold is-italic">
+      Post a Question
+    </h3>
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-half">
+          {% if user.is_authenticated == False %}
+          <div class="has-text-centered">
+            <span class="tag is-danger is-size-6 is-light"
+              ><div>
+                Please <a class="is-link" href="/login">sign in</a> to submit a
+                question.
+              </div>
+            </span>
+          </div>
+
+          {% endif %}
+          <div class="field">
+            <label class="label" for="email"> Subject </label>
+            <div class="control">
+              <input
+                type="text"
+                class="input"
+                id="subject"
+                name="subject"
+                placeholder="Enter the subject of your question."
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="body">
+              Body (Max. 2000 Characters)
+            </label>
+            <div class="control">
+              <textarea
+                class="textarea"
+                maxlength="2000"
+                id="body"
+                name="body"
+                placeholder="Start typing..."
+              ></textarea>
+            </div>
+          </div>
+          <div id="addImagesHere" class="field">
+            <label class="label" for="email"> Images (Optional): </label>
+            <div id="displayImagesHere" class="control"></div>
+            <div id="addButtonHere" class="control">
+              <button
+                id="addImageButton"
+                type="button"
+                onclick="addImageInput(0)"
+                class="button is-primary is-outlined"
+              >
+                Add Image
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="button is-success">Post Question</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+{% endblock %}

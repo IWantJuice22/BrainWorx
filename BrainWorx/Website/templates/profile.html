@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
+content %}
+<h3 class="has-text-centered is-size-2 has-text-weight-bold is-italic">
+  {{user.first_name}}
+</h3>
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-third">
+      <p class="is-size-5 menu-label">User Settings</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

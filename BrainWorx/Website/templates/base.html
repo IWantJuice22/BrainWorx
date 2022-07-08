@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Index HTML Doc{% endblock %}</title>
+  </head>
+  <body>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/c5fb6a5caf.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <nav class="navbar has-shadow">
+      <div class="navbar-brand">
+        <a href="/" class="navbar-item">
+          <img
+            src="./../static/BrainWorxLogo.ico"
+            alt="site-logo"
+            style="max-height: 70px"
+            class="py-2 px-2"
+          />
+        </a>
+        <a class="navbar-burger" id="burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="nav-links">
+        <div class="navbar-start box">
+          <a href="/" class="navbar-item is-size-5"> Home </a>
+
+          <a href="/contact" class="navbar-item is-size-5"> Contact </a>
+        </div>
+        <div class="navbar-end">
+          {% if user.is_authenticated == False %}
+          <a class="navbar-item" href="/login">
+            <button class="button is-outlined">
+              Login&nbsp;&nbsp;
+              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+          </a>
+          <a class="navbar-item" href="/sign-up">
+            <button class="button is-primary is-outlined">
+              Sign Up&nbsp;
+              <i class="fa-solid fa-user-plus"></i>
+            </button>
+          </a>
+          {% elif user.is_authenticated %}
+          <a class="navbar-item" href="/logout">
+            <button class="button is-danger is-outlined" id="logout">
+              Logout&nbsp;&nbsp;
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </a>
+
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="notification is-danger is-light">
+      <button class="delete" role="alert"></button>
+      <p class="is-italic">{{ message }}</p>
+    </div>
+    {% else %}
+    <div class="notification is-success" id="notification">
+      <button class="delete" role="alert" id="notification_close"></button>
+      <p class="is-italic">{{ message }}</p>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+    <div class="container">{% block content %} {% endblock %}</div>
+  </body>
+</html>
